@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
         else
         {
             if (s[i] == '+')
-                std::cout << "+" << std::endl;
+                std::cout << "+" << std::endl; //envoie operateur avec a et b retourne resultat
             else if (s[i] == '-')
                 std::cout << "-" << std::endl;
             else if (s[i] == '/')
@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
                 std::cout << "*" << std::endl;
             else
             {
+                //verifie s'il reste 2 chiffres avant operation
                 std::cout << "Error\n" << std::endl;
                 return (0);
             }
