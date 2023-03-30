@@ -6,7 +6,7 @@
 /*   By: ahammad <ahammad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 15:22:59 by ahammad           #+#    #+#             */
-/*   Updated: 2023/03/30 15:27:07 by ahammad          ###   ########.fr       */
+/*   Updated: 2023/03/30 16:05:50 by ahammad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     if (argc != 2)
     {
         std::cerr << "les arguments ne sont pas suffisant\n"<< std::endl;
-        std::cerr << "Error" << std::endl;
+        std::cerr << "Error";
         return (0);
     }
     else
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
                 }
                 else 
                 {
-                    std::cout << "Error" << std::endl;
+                    std::cout << "Error";
                     return (0);
                 }
             }
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
                 }
                 else 
                 {
-                    std::cout << "Error" << std::endl;
+                    std::cout << "Error";
                     return (0);
                 }
             }
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
                 }
                 else 
                 {
-                    std::cout << "Error" << std::endl;
+                    std::cout << "Error";
                     return (0);
                 }            }
             else if (s[i] == '*')
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
                 }
                 else 
                 {
-                    std::cout << "Error" << std::endl;
+                    std::cout << "Error";
                     return (0);
                 }            }
             else if ( s[i] == ' ')
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                std::cout << "Error\n" << std::endl;
+                std::cout << "Error\n";
                 return (0);
             }
         }

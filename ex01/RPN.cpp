@@ -6,7 +6,7 @@
 /*   By: ahammad <ahammad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 15:23:10 by ahammad           #+#    #+#             */
-/*   Updated: 2023/03/30 15:27:07 by ahammad          ###   ########.fr       */
+/*   Updated: 2023/03/30 16:13:01 by ahammad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ void    ft_addition(int a, int b, std::stack<int> *pile)
 
 void    ft_soustraction(int a, int b, std::stack<int> *pile)
 {
-    int c = a - b;
+    int c = b - a;
     pile->push(c);
 }
 void    ft_multiplication(int a, int b, std::stack<int> *pile)
 {
-    int c = a * b;
+    int c = b * a;
     pile->push(c);
 }
 void    ft_division(int a, int b, std::stack<int> *pile)
