@@ -6,7 +6,7 @@
 /*   By: ahammad <ahammad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 10:52:38 by ahammad           #+#    #+#             */
-/*   Updated: 2023/04/01 00:50:57 by ahammad          ###   ########.fr       */
+/*   Updated: 2023/04/01 17:42:58 by ahammad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 class BitcoinExchange 
 {
     private:
-        std::map<std::string, float, std::greater<std::string> > data_csv;
+        std::map<std::string, float, std::greater<std::string> > data_csv; //utilisation de map pour match la clef valeur date et prix 
     public:
         BitcoinExchange();
         BitcoinExchange(const BitcoinExchange & btc);
