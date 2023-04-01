@@ -6,15 +6,9 @@
 /*   By: ahammad <ahammad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 10:52:38 by ahammad           #+#    #+#             */
-/*   Updated: 2023/03/31 15:23:48 by ahammad          ###   ########.fr       */
+/*   Updated: 2023/04/01 00:50:57 by ahammad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#ifndef BitcoinExchange_hpp
-#define BitcoinExchange_hpp
-#include <fstream>
-#include <iostream>
-#include <fstream>
 
 #ifndef BITCOINEXCHANGE_HPP
 #define BITCOINEXCHANGE_HPP
@@ -40,7 +34,5 @@ class BitcoinExchange
         void printData_CSV();
         void printData_CSV_fileTXT(std::string date, float value);
 };
-
-#endif
 
 #endif

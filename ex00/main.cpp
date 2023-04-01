@@ -6,13 +6,11 @@
 /*   By: ahammad <ahammad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 15:22:59 by ahammad           #+#    #+#             */
-/*   Updated: 2023/03/31 16:19:28 by ahammad          ###   ########.fr       */
+/*   Updated: 2023/04/01 01:19:06 by ahammad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
-
-
 
 bool check_y_m_d(std::string year, std::string month, std::string day)
 {
@@ -81,20 +79,20 @@ int check_value_str(std::string value)
 	return 1;
 }
 
-int main(int argc, char **argvv)
+int main(int ac, char **av)
 {
-	if(argc == 2)
+	if(ac == 2)
 	{
 		BitcoinExchange btc;
 		if(!btc.btc_readFromData_CSV("data.csv"))
 		{
 			std::cerr << "The data csv is corrupted !!" << std::endl;
 		}
-		std::ifstream file_txt(argv[1]);
+		std::ifstream file_txt(av[1]);
 		if(file_txt.fail())
 		{
-			std::cerr << "Could not open the FILE" << argv[1] << " check again !" << std::endl;
-			return 0;
+			std::cerr << "Could not open the FILE " << av[1] << " check again !" << std::endl;
+			return (0);
 		}
 		else
 		{
@@ -178,28 +176,4 @@ int main(int argc, char **argvv)
 		std::cerr << "The number or args is WRONG !" << std::endl;
 	}
 	return 0;
-}
-
-
-
-int main(int argc, char *argv[])
-{
-    if (argc != 2)
-    {
-        std::cerr << "Error: argument\n just (2)"<< std::endl;
-        return (0);
-    }
-    else
-    {
-        std::ifstream fichier("input.txt", std::ifstream::in);
-        if (fichier)
-        {
-            //parsing
-            fichier.close();
-        }
-        else
-        {
-            std::cerr << "Impossible d'ouvrir" << std::endl;
-        }   
-    }
 }

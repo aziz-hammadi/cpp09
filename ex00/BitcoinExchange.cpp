@@ -6,11 +6,9 @@
 /*   By: ahammad <ahammad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 10:53:37 by ahammad           #+#    #+#             */
-/*   Updated: 2023/03/31 15:54:24 by ahammad          ###   ########.fr       */
+/*   Updated: 2023/04/01 00:43:01 by ahammad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "BitcoinExchange.hpp"
 
 #include "BitcoinExchange.hpp"
 
@@ -65,5 +63,5 @@ void BitcoinExchange::printData_CSV()
 void BitcoinExchange::printData_CSV_fileTXT(std::string date, float value)
 {
     double result = this->data_csv.lower_bound(date)->second * value;
-    std::cout << std::fixed << std::setprecision(2) << date << " => " << value << " = " << result << std::endl;
+    std::cout << std::fixed << date << " => " << value << " = " << result << std::endl;
 }
