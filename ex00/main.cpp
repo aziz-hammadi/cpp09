@@ -5,175 +5,63 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahammad <ahammad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/30 15:22:59 by ahammad           #+#    #+#             */
-/*   Updated: 2023/04/01 01:19:06 by ahammad          ###   ########.fr       */
+/*   Created: 2023/03/30 10:52:38 by ahammad           #+#    #+#             */
+/*   Updated: 2023/04/05 15:42:17 by ahammad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 
-bool check_y_m_d(std::string year, std::string month, std::string day)
+int check_file_csv(std::string data_csv)
 {
-	int yearr, monthh, dayy;
-	yearr = atoi(year.c_str());
-	monthh = atoi(month.c_str());
-	dayy = atoi(day.c_str());
-
-	if(dayy < 1 || dayy > 31)
-		return false;
-	if(monthh < 1 || monthh > 12)
-		return false;
-	if(yearr < 2009 || yearr > 2023)
-		return false;
-	if(monthh == 2 && dayy > 29)
-		return false;
-	return true;
+    std::string::size_type i;
+    size_t i;
+    i = 0;
+    std::string data_csv = "data.csv";
+    std::ifstream file_csv(data_csv.c_str());
+    if(file_csv.fail())
+    {
+        std::cerr << "echec open file data.csv" << std::endl;
+        return (0);
+    }
+    else
+    {
+        std::string line;
+        std::getline(file_csv, line); //ignore la premiere ligne
+        while (getline(file_csv, line))
+        {
+            while (line[i] !=',')
+                i++;
+            i = 0;
+        }
+    }
 }
 
-bool check_date(std::string date)
+int main(int argc, char *argv[])
 {
-	if(date.size() != 10)
-		return false;
-	for(int i = 0; i < 10; i++)
-	{
-		if(i == 4 || i == 7)
-		{
-			if(date[i] != '-')
-				return false;
-		}
-		else if(!isdigit(date[i]))
-			return false;
-	}
-	if(!check_y_m_d(date.substr(0, 4), date.substr(5, 2), date.substr(8, 2)))
-		return false;
-	return true;
-}
+    if (argc == 2)
+    {
+        BitcoinExchange change;
+        
+        if (check_file_csv("data.csv"))
+        {
+            std::cerr << "Error file : data.csv" << std::endl;
+        }
+        std::string data_csv = "data.csv";
+        std::ifstream file_csv(data_csv.c_str());
+        std::string line;
+        std::getline(file_csv, line);
+        std::cout << "titre : "<< line << std::endl;
+        std::getline(file_csv, line, ',');
+        std::cout << "date :" << line << std::endl;
+        std::getline(file_csv, line);
+        std::cout << "prix :" << line << std::endl;
 
-int check_value(float value)
-{
-	if(value < 0)
-		return 0;
-	if(value > 1000)
-		return 2;
-	return 1;
-}
+        std::ifstream input_txt(argv[1]);
+        if (input_txt.fail())
+            std::cerr << "Error could don't open FILE "<< argv[1] << std::endl; 
+    }
 
-int check_value_str(std::string value)
-{
-	int i = 0;
-	int k = 0;
-	while(value[i])
-	{
-		if(value[i] != '.' && value[i] != ',' && !isdigit(value[i]))
-		{
-			return 0;
-		}
-		if (value[i] == '.' || value[i] == ',')
-		{
-			k++;
-		}
-		i++;
-	}
-	if(k > 1)
-		return 0;
-	return 1;
-}
-
-int main(int ac, char **av)
-{
-	if(ac == 2)
-	{
-		BitcoinExchange btc;
-		if(!btc.btc_readFromData_CSV("data.csv"))
-		{
-			std::cerr << "The data csv is corrupted !!" << std::endl;
-		}
-		std::ifstream file_txt(av[1]);
-		if(file_txt.fail())
-		{
-			std::cerr << "Could not open the FILE " << av[1] << " check again !" << std::endl;
-			return (0);
-		}
-		else
-		{
-			std::string line;
-			//std::getline(file_txt, line); // Read the first line and ignore it
-			int a = 0;
-			while(std::getline(file_txt, line))
-			{
-				if(line == "date | value" && a == 0)
-				{
-					a = 1;
-					continue;
-				}
-				int i = 0;
-				int k = 0;
-				while(line[i])
-				{
-					if(line[i] == '|')
-						k++;
-					i++;
-				}
-				if(k != 1)
-				{
-					std::cerr << "Error: bad input => " << line << std::endl;
-					continue;
-				}
-				char *cstr = new char[line.size() + 1];
-				strcpy(cstr, line.c_str());
-				char *token = strtok(cstr, " |");
-				if(!token)
-				{
-					std::cerr << "Error: bad input => " << line << std::endl;
-					continue;
-				}
-				std::string date = token;
-				token = strtok(NULL, " |");
-				if(!token)
-				{
-					std::cerr << "Error: bad input => " << line << std::endl;
-					continue;
-				}
-				if(!check_value_str(token))
-				{
-					std::cerr << "Error: bad input => " << line << std::endl;
-					continue;
-				}
-				int a = 0;
-				while(token[a])
-				{
-					if(token[a] == ',')
-						token[a] = '.';
-					a++;
-				}
-				float value = std::atof(token);
-				if(!check_date(date))
-				{
-					std::cout << "Error: invalid date." << std::endl;
-					delete[] cstr;
-					continue;
-				}
-				if(check_value(value) == 0)
-				{
-					std::cout << "Error: not a positive number." << std::endl;
-					delete[] cstr;
-					continue;
-				}
-				if(check_value(value) == 2)
-				{
-					std::cout << "Error: too large a number." << std::endl;
-					delete[] cstr;
-					continue;
-				}
-				else
-					btc.printData_CSV_fileTXT(date, value);
-				delete[] cstr;
-			}
-		}
-	}
-	else
-	{
-		std::cerr << "The number or args is WRONG !" << std::endl;
-	}
-	return 0;
+    else
+        std::cerr << "besoin du fichier input.txt" << std::endl;
 }

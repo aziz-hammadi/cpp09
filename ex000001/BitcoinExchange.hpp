@@ -6,7 +6,7 @@
 /*   By: ahammad <ahammad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 10:52:38 by ahammad           #+#    #+#             */
-/*   Updated: 2023/04/05 03:26:59 by ahammad          ###   ########.fr       */
+/*   Updated: 2023/04/01 17:42:58 by ahammad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,23 @@
 #define BITCOINEXCHANGE_HPP
 
 #include <iostream>
-#include <fstream> 
 #include <string>
 #include <map>
+#include <fstream>
+#include <sstream>
+#include <cstring>
+#include <cstdlib>
 
-class BitcoinExchange
+class BitcoinExchange 
 {
     private:
         std::map<std::string, float, std::greater<std::string> > data_csv; //utilisation de map pour match la clef valeur date et prix 
     public:
         BitcoinExchange();
         BitcoinExchange(const BitcoinExchange & btc);
-        ~BitcoinExchange ();
         BitcoinExchange & operator= (const BitcoinExchange & btc);
-		int check_file_csv(std::string file_csv);
+        ~BitcoinExchange ();
+        int btc_readFromData_CSV(std::string csv_file);
         void printData_CSV();
         void printData_CSV_fileTXT(std::string date, float value);
 };
