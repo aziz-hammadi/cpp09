@@ -17,25 +17,28 @@
 #include <map>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
-int check_value(std::string token)
+void check_value(float value)
 {
-    if (token < 0)
-        return (0);
-    if (token > 1000)
-        return (2);
-    return (1);
+    if (value < 0)
+        throw std::invalid_argument("not a positive number.");
+    if (value > 1000)
+        throw std::invalid_argument("too large a number.");
+        // return (2);
+    // return (1);
 }
-
-int check_day(std::string day)
+/*
+int check_day(std::string day) //inutile
 {
     int nbr_day;
     nbr_day = atoi(day);
     if (nbr_day < 1 || nbr_day > 31)
-        return (0);
+        trow std::invalid_argument("Date malformé");
     return (1);
 }
-
+*/
+/*
 int check_mouth(std::string mouth)
 {
     int nbr_mouth;
@@ -52,9 +55,24 @@ int check_year(std::string year)
     if(nbr_year < 2009 || nbr_year > 2023)
         return (0)
     return (1);
+}*/
+int check_value_date(string::string date) //la nouvelle 
+{
+    struct tm tm;
+    if (strptime(date.c_str(), "%Y-%m-%d", &tm))
+		return (true);
+    else if("%m" < 2009 )
+	{
+		std::cout << "Error: bad input invalid mouth=> "<< date << std::endl;
+		return (false);  
+	}
+	else
+	{
+		std::cout << "Error: invalid date. => "<< date << std::endl;
+		return (false);
+	}
 }
-
-int check_value_date(std::string token)
+int check_value_date(std::string token) //ancienne version
 {
     int i;
     i = 0;
@@ -81,7 +99,6 @@ int check_value_date(std::string token)
     }
     return (1);
 }
-
 int check_value_str(std::string token) //check nbr in str
 {
     int i = 0;
@@ -99,7 +116,21 @@ int check_value_str(std::string token) //check nbr in str
     return (1);
 }
 
-int check_file_txt(std::string file_txt)
+std::string trim(const std::string &str)
+{
+    if (str.size() == 0)
+        return str;
+
+    size_t start = 0;
+    size_t end = str.size() - 1;
+    while (std::isspace(str[start]))
+        ++start;
+    while (std::isspace(str[end]))
+        --end;
+    return str.substr(start, end);
+} 
+
+bool check_file_txt(std::string file_txt)
 {
     std::ifstream input_txt(file_txt);
     std::string line;
@@ -125,82 +156,49 @@ int check_file_txt(std::string file_txt)
             std::cerr <<"Error: bad input (not value)=> " <<std::endl;
             continue;
         }
-        char *value_text = new char[line.size() + 1];
-        strcpy(value_text, line.c_str());
-    
-        std::string delimiter = " |";
+        std::string value_text = line;
+        std::string delimiteur = "|";
         size_t pos = 0;
         std::string token;
-        if ((pos = line.find(delimiter)) != std::string::npos) 
+        // line == "2011-01-03 | 1"
+        if ((pos = line.find(delimiteur)) != std::string::npos) 
         {
-            token = line.substr(0, pos);
-            if (token.size()!=0 )
+            token = trim(line.substr(0, pos));
+            // token == "2011-01-03"
+            if (token.size()!=0)
             {
                 std::cout << token << std::endl;
             }
-            line.erase(0, pos + delimiter.length());
+            line.erase(0, pos + delimiteur.length());
+            // line == " 1"
         }
-        if(token.empty())
+        if(token.empty()) //  "     | " 
         {
 			std::cerr << "Error: bad input => " << line << std::endl;
 			continue;
         }
+		size_t pos = 0;
         std::string date = token;
-        if ((pos = line.find(delimiter)) != std::string::npos) 
-        {
-            token = line.substr(0, pos);
-            /*if (token.size()!=0 )
+        try {
+            float value std::stof(trim(line));
+            if (value < 1000)
             {
-                std::cout << token << std::endl;
-            }*/
-            line.erase(0, pos + delimiter.length());
+                std::cerr << "Error: bad input => " << e.what() << line << std::endl;
+                return false;
+            }
         }
-        if(token.empty())
-        {
-			std::cerr << "Error: bad input => " << line << std::endl;
-            continue;
+        catch (std::invalid_argument &e) {
+            std::cerr << "Error: bad input => " << e.what() << line << std::endl;
+            return false;
         }
-		if(!check_value_str(token))
-        {
-			std::cerr << "Error: not a positive number. => " << line << std::endl;
-			continue;
-        }
-        int a = 0;
-        while (token[a])
-        {
-            if (token[a] == ',')
-                token.replace(a, 1, ".");
-            a++;
-        }
-        float value = stof(token);
-        std::cout << "TOKEN :"<<token << std::endl;
-        if(!check_value_date(date) == 0)
-        {
-            std::cout << "Error: invalide date." << std::endl;
-            detele[] cstr;
-            continue;
-        }
-        if(!check_value(value)==0)
-        {
-            std::cout << "Error: not a positive number." << std::endl;
-            detele[] cstr;
-            continue;
-        }
-		if(check_value(value) == 2)
-        {
-			std::cout << "Error: too large a number. (a positive integer between 0 and 1000)" << std::endl;
-			delete[] cstr;
-			continue;
-		}
-        else //apres avoir verifier les cas d'erreurs tout se passe ici
-            double result = this-> 
-        delete[] cstr;
+
+		check_value_date(date);
         //float nbr = std::stof(token);
         //std::cout << nbr << std::endl;
         
     }
     std::cout << "line input :" << line << std::endl; //ignore premiere ligne
-    return (1);
+    return true;
 }
 
 int check_file_csv(std::string data_csv)
@@ -237,19 +235,6 @@ int main(int argc, char *argv[])
         {
             std::cerr << "Error file : data.csv" << std::endl;
         }
-
-        // CsvParser dataCsvParser("data.csv", ","); 
-        // CsvParser inputTxtParser("input.txt", "|");
-
-        // std::vector<std::string> dataDates = dataCsvParser.getRow("date");
-        // std::vector<std::string> inputDates = inputTxtParser.getRow("date");
-
-        // for (int i = 0; i < dataDates.size(); ++i) {
-        //     if (dataDates[i] == inputDates[i])
-        //     {
-                
-        //     }
-        // }
         
 
         std::ifstream input_txt(argv[1]);
@@ -265,6 +250,8 @@ int main(int argc, char *argv[])
             //verifier erreur input txt
             check_file_txt(argv[1]);
         }
+
+		//envoie fichier correcte pour le tester 
     }
 
     else
