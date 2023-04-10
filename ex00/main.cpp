@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "BitcoinExchange.hpp"
+#include "BitcoinExchange.hpp"
 #include <iostream>
 #include <fstream> 
 #include <string>
@@ -18,16 +18,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <iomanip>
 
-// void check_value(float value)
-// {
-//     if (value < 0)
-//         throw std::invalid_argument("not a positive number.");
-//     if (value > 1000)
-//         throw std::invalid_argument("too large a number.");
-//         // return (2);
-//     // return (1);
-// }
 /*
 int check_day(std::string day) //inutile
 {
@@ -201,6 +193,16 @@ int check_year(std::string year)
 //     return true;
 // }
 
+void check_value(float value)
+{
+    if (value < 0)
+        throw std::invalid_argument("not a positive number.");
+    if (value > 1000)
+        throw std::invalid_argument("too large a number.");
+        // return (2);
+    // return (1);
+}
+
 std::string trim(const std::string &str)
 {
     if (str.size() == 0)
@@ -228,16 +230,6 @@ public:
             this->_year = tm.tm_year + 1900;
             this->_month = tm.tm_mon + 1;
             this->_day = tm.tm_mday;
-            if (tm.tm_mon < 9)
-            {
-                std::string str_month = "0" + std::to_string(this->_month);
-                tm.tm_mon = std::stoi(str_month);  
-            }
-            if (tm.tm_mday < 9)
-            {
-                std::string str_day = "0" + std::to_string(this->_day);
-                tm.tm_mday = std::stoi(str_day);  
-            }
             this->_is_valid = true;
         }
         else
@@ -246,7 +238,7 @@ public:
         }
     }
 
-    bool operator<(const Date &date) const
+    bool operator < (const Date &date) const
     {
         if (date._year > this->_year || date._month > this->_month || date._day > this->_day)
             return true;
@@ -267,13 +259,13 @@ private:
     int _day;
 };
 
-std::map<Date, float> parse_csv(const std::string &data_csv, char delimiter)
+std::map<Date, float, std::greater<Date> > parse_csv(const std::string &data_csv, char delimiter)
 {
     std::ifstream file_csv(data_csv);
     if(file_csv.fail())
         throw std::invalid_argument("echec open file : " + data_csv);
     std::string line;
-    std::map<Date, float> values;
+    std::map<Date, float, std::greater<Date> > values;
     std::getline(file_csv, line); //ignore la premiere ligne
     while (std::getline(file_csv, line))
     {
@@ -282,10 +274,10 @@ std::map<Date, float> parse_csv(const std::string &data_csv, char delimiter)
         std::string value_str = trim(line.substr(virgule + 1));
         try {
             float value = std::stof(value_str);
-            values.insert({date, value});
+            values.insert({date, value}); //verifie
         }
-        catch (std::invalid_argument) {
-            values.insert({date, 0});
+        catch (const std::invalid_argument &e) {
+            throw std::runtime_error(data_csv + " ");
         }
     }
     return values;
@@ -293,31 +285,40 @@ std::map<Date, float> parse_csv(const std::string &data_csv, char delimiter)
 
 void read_input(const std::string &filename, char delimiter)
 {
-    std::map<Date, float> dateValues = parse_csv("small.csv", ',');
-    std::ifstream file_csv(filename);
-    if(file_csv.fail())
+    std::map<Date, float, std::greater<Date> > dateValues = parse_csv("small.csv", ',');
+    std::ifstream file(filename);
+    if(file.fail())
         throw std::invalid_argument("echec open file : " + filename);
     std::string line;
-    std::map<Date, float> values;
-    std::getline(file_csv, line); //ignore la premiere ligne
-    while (std::getline(file_csv, line))
+    // std::map<Date, float> values;
+    std::getline(file, line); //ignore la premiere ligne
+    while (std::getline(file, line))
     {
         size_t virgule = line.find_first_of(delimiter);
         try {
             Date date = trim(line.substr(0, virgule));
             if (!date.is_valid())
-                throw std::invalid_argument("bad input => " + date.input());
+                throw std::invalid_argument("bad input => " + date.input()); //date invalide 
             std::string value_str = trim(line.substr(virgule + 1));
             float value = std::stof(value_str);
-            if (value < 0)
-                throw std::invalid_argument("not a positive number");
+            check_value(value);
             //value > 1000
-            values.insert({date, value});
-            if (!dateValues[date])
+            //values.insert({date, value});
+            if (dateValues.find(date) == dateValues.end())
             {
-                dateValues.lower_bound(date);
+                // trouver la date la plus proche avec lower_bound
+                //csv inverse
+				//lower band
+				double result = dateValues.lower_bound(date)->second * value;
+				std::cout << "VOICIII" << std::endl;
             }
-            std::cout << date.input() << " => " << value << " = " << dateValues[date] * value << std::endl;
+            // Afficher en cas ou c'est bon avec "0":
+			std::cout << std::setw(2) << std::setfill('0') << date.year();
+			std::cout << '-' <<std::endl;
+			std::cout << std::setw(2) << std::setfill('0') << date.month();
+			std::cout << '-' <<std::endl;
+			std::cout << std::setw(2) << std::setfill('0') << date.day();
+            std::cout /*<< date.input()*/ << " => " << value << " = " << dateValues[date] * value /* ou result*/<< std::endl;
         }
         catch (const std::invalid_argument &e) {
             std::cout << "Error: " << e.what() << std::endl;
@@ -325,41 +326,24 @@ void read_input(const std::string &filename, char delimiter)
     }
 }
 
-#include <vector>
 #include <algorithm>
 
 int main(int argc, char *argv[])
 {
-   /*std::map<Date, std::string> m; //inutile
-    m.insert({Date("2011-04-11"), ""});
-    m.insert({Date("2011-04-14"), ""});
-    m.insert({Date("2011-04-09"), ""});
-    m.insert({Date("2011-04-13"), ""});
+	//argc == 2 ? 
+	//text need argument 
+	//return 0
 
-    for (auto it = m.begin(); it != m.end(); ++it)
-        std::cout << "It: " << it->first.year() << "/" << it->first.month() << "/" << it->first.day() << " - " << it->second << std::endl;
-	return (0);
-*/
-
-    return 0;
     try
     {
-        //read_input("input.txt", '|');
-        std::map<Date, float, std::greater<std::string> > dataValues = parse_csv("small.csv", ',');//a remplacer par data.csv
-        std::map<Date, float> inputValues = parse_csv("input.txt", '|');
-         for (std::map<Date, float>::iterator it = dataValues.begin(); it != dataValues.end(); ++it)
-         {
-             if (it->first.is_valid())
-             {
-                 std::cout << it->first.year() << "/" << it->first.month() << "/" << it->first.day() << " => " << it->second << " = " << std::endl;   
-             }
-             else
-             {
-                 std::cout << "Error : bad input => " << it->first.input() << std::endl;       
-             }
-         }
+        //argc == 2
+        read_input(argv[1], '|');
     }
-    catch (std::invalid_argument &e)
+    catch (const std::invalid_argument &e)
+    {
+        std::cerr << "Error: bad: "<< e.what() << std::endl;
+    }
+    catch (const std::runtime_error &e)
     {
         std::cerr << "Error: bad: "<< e.what() << std::endl;
     }
