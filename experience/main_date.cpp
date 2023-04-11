@@ -42,8 +42,11 @@ int main() {
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <iomanip>
 
 int main() {
+  std::cout << std::setw(2) << std::setfill(':') << 2 << std::endl;
+  return 0;
   std::string str_date = "2023-04-09 15:30:45";
   std::tm tm_date = {};
 
@@ -76,7 +79,7 @@ int main() {
 
   // afficher les informations de la structure tm
   std::cout << "Année : " << tm_date.tm_year + 1900 << std::endl;
-  std::cout << "Mois : " << str_month << std::endl;
+  // std::cout << "Mois : " << str_month << std::endl;
   std::cout << "Jour : " << tm_date.tm_mday << std::endl;
   std::cout << "Heure : " << tm_date.tm_hour << std::endl;
   std::cout << "Minute : " << tm_date.tm_min << std::endl;
