@@ -6,7 +6,7 @@
 /*   By: ahammad <ahammad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 10:52:38 by ahammad           #+#    #+#             */
-/*   Updated: 2023/04/11 19:23:44 by ahammad          ###   ########.fr       */
+/*   Updated: 2023/04/11 19:59:37 by ahammad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,11 +135,12 @@ void read_input(const std::string &filename, char delimiter)
             std::string value_str = trim(line.substr(virgule + 1));
             //float value = stof(value_str);
             float value;// = stof(value_str);
+            std::cout << "_value_std :" << value_str;
             sscanf(value_str.c_str(), "%f", &value);
             check_value(value);
             float result = 0.0;
-            //std::cout << "_value_1 :" << value << std::endl;
-            //std::cout << "dateValues[date] :" << dateValues[date] << std::endl;
+            std::cout << "_value_1 :" << value;
+            std::cout << " dateValues[date] :" << dateValues[date] << std::endl;
 			//result = dateValues.lower_bound(date)->second * value;
             //std::cout << "_result_1 :" << result << std::endl;
             //if (dateValues.find(date) == dateValues.end())
@@ -147,6 +148,7 @@ void read_input(const std::string &filename, char delimiter)
             //    std::cout << "dateValues[date] :" << dateValues[date] << std::endl;
             //    std::cout << "_value :" << value << std::endl;
 			result = dateValues.lower_bound(date)->second * value;
+            std::cout << "_result_1 :" << result << std::endl;
             //}
 			std::cout << std::setw(2) << std::setfill('0') << date.year();
 			std::cout << '-';
@@ -165,7 +167,11 @@ void read_input(const std::string &filename, char delimiter)
 
 int main(int argc, char *argv[])
 {
-    (void) argc;
+    if (argc < 2)
+    {
+        std::cout << "need input.txt on argument" << std::endl;
+        return (0);
+    }
     try
     {
         read_input(argv[1], '|');
