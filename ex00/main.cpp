@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   main copy.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahammad <ahammad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 10:52:38 by ahammad           #+#    #+#             */
-/*   Updated: 2023/04/09 19:20:18 by ahammad          ###   ########.fr       */
+/*   Updated: 2023/04/11 20:46:24 by ahammad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "BitcoinExchange.hpp"
+//#include "BitcoinExchange.hpp"
 #include <iostream>
 #include <fstream> 
 #include <string>
@@ -20,187 +20,12 @@
 #include <time.h>
 #include <iomanip>
 
-/*
-int check_day(std::string day) //inutile
-{
-    int nbr_day;
-    nbr_day = atoi(day);
-    if (nbr_day < 1 || nbr_day > 31)
-        trow std::invalid_argument("Date malformé");
-    return (1);
-}
-*/
-/*
-int check_mouth(std::string mouth)
-{
-    int nbr_mouth;
-    nbr_mouth = atoi(mouth)
-    if(mouth < 1 || mouth > 12)
-        return (0)
-    return (1);
-}
-
-int check_year(std::string year)
-{
-    int nbr_year;
-    nbr_year = atoi(year);
-    if(nbr_year < 2009 || nbr_year > 2023)
-        return (0)
-    return (1);
-}*/
-// bool check_value_date(string::string date) //la nouvelle version check date
-// {
-//     struct tm tm;
-//     if (strptime(date.c_str(), "%Y-%m-%d", &tm))
-// 		return (true);
-//     else if("%m" < 2009)
-// 	{
-// 		std::cout << "Error: bad input invalid mouth (%m < 2009)=> "<< date << std::endl;
-// 		return (false);  
-// 	}
-// 	else
-// 	{
-// 		std::cout << "Error: invalid date. => "<< date << std::endl;
-// 		return (false);
-// 	}
-// }
-// /*int check_value_date(std::string token) //ancienne version
-// {
-//     int i;
-//     i = 0;
-//     if (token.size() != 10)
-//     {
-//         return (0);
-//     }
-//     while (i < 10)
-//     {
-//         if (token[4] != '-' || token[7] !== '-')
-//             return (0);
-//         else if (!= isdigit(token[i]))
-//             return (0);
-//         i++;
-//     }
-//     while (token[i])
-//     {
-//         if(check_year(date.substr(0, 4)) == 0)
-//             return (0);
-//         if(check_mouth(date.substr(5, 2)) == 0)
-//             return (0);
-//         if(check_day(date.substr(8,2)) == 0)
-//             return (0);
-//     }
-//     return (1);
-// }*/
-// /*
-// int check_value_str(std::string token) //check nbr in str
-// {
-//     int i = 0;
-//     int j = 0;
-//     while(token[i])
-//     {
-//         if (token[i] != '.' && token[i] != ',' && !isdigit(token[i]))
-//             return (0);
-//         if (token[i] == '.' || token[i] == ',')
-//             j++;
-//         i++;
-//     }
-//     if (j > 1)
-//         return (0);
-//     return (1);
-// }
-// */
-// std::string trim(const std::string &str)
-// {
-//     if (str.size() == 0)
-//         return str;
-
-//     size_t start = 0;
-//     size_t end = str.size() - 1;
-//     while (std::isspace(str[start]))
-//         ++start;
-//     while (std::isspace(str[end]))
-//         --end;
-//     return str.substr(start, end);
-// } 
-
-// bool check_file_txt(std::string file_txt)
-// {
-//     std::ifstream input_txt(file_txt);
-//     std::string line;
-//     int nbr_line;
-//     nbr_line = 0;
-//     while (std::getline(input_txt, line))
-//     {
-//         if(nbr_line == 0)
-//         {
-//             nbr_line++;
-//             continue;
-//         }
-//         int cmpt_pipe = 0;
-//         int cmp_letter = 0;
-//         while (line[cmp_letter])
-//         {
-//             if(line[cmp_letter] == '|') //ok juste un
-//                 cmpt_pipe++;
-//             cmp_letter++;
-//         }
-//         if(cmpt_pipe != 1)
-//         {
-//             std::cerr <<"Error: bad input (bad format)=> " <<std::endl;
-//             continue;
-//         }
-//         std::string delimiteur = "|";
-//         size_t pos = 0;
-//         std::string token;
-//         // line == "2011-01-03 | 1"
-//         if ((pos = line.find(delimiteur)) != std::string::npos) 
-//         {
-//             token = trim(line.substr(0, pos));
-//             // token == "2011-01-03"
-//             if (token.size()!=0)
-//             {
-//                 std::cout << token << std::endl; //just test value of date
-//             }
-//             line.erase(0, pos + delimiteur.length());
-//             // line == " 1"
-//         }
-//         if(token.empty()) //  "     | " 
-//         {
-// 			std::cerr << "Error: bad input => " << line << std::endl;
-// 			continue;
-//         }
-// 		size_t pos = 0;
-//         std::string date = token;
-//         try
-//         {
-//             float value std::stof(trim(line));
-//             if (value < 1000)
-//             {
-//                 std::cerr << "Error: bad input => " << e.what() << line << std::endl;
-//                 return false;
-//             }
-//         }
-//         catch (std::invalid_argument &e) {
-//             std::cerr << "Error: bad input => " << e.what() << line << std::endl;
-//             return false;
-//         }
-// 		check_value_date(date); //verifie date 
-//         //float nbr = std::stof(token);
-//         //std::cout << nbr << std::endl;
-        
-//     }
-//     std::cout << "line input :" << line << std::endl; //ignore premiere ligne
-//     return true;
-// }
-
 void check_value(float value)
 {
     if (value < 0)
         throw std::invalid_argument("not a positive number.");
     if (value > 1000)
         throw std::invalid_argument("too large a number.");
-        // return (2);
-    // return (1);
 }
 
 std::string trim(const std::string &str)
@@ -238,9 +63,16 @@ public:
         }
     }
 
-    bool operator < (const Date &date) const
+    bool operator<(const Date &date) const
     {
         if (date._year > this->_year || date._month > this->_month || date._day > this->_day)
+            return true;
+        return false;
+    }
+
+    bool operator>(const Date &date) const
+    {
+        if (date._year < this->_year || date._month < this->_month || date._day < this->_day)
             return true;
         return false;
     }
@@ -261,20 +93,22 @@ private:
 
 std::map<Date, float, std::greater<Date> > parse_csv(const std::string &data_csv, char delimiter)
 {
-    std::ifstream file_csv(data_csv);
+    std::ifstream file_csv(data_csv.c_str());
     if(file_csv.fail())
         throw std::invalid_argument("echec open file : " + data_csv);
     std::string line;
     std::map<Date, float, std::greater<Date> > values;
-    std::getline(file_csv, line); //ignore la premiere ligne
+    std::getline(file_csv, line);
     while (std::getline(file_csv, line))
     {
         size_t virgule = line.find_first_of(delimiter);
         Date date = trim(line.substr(0, virgule));
         std::string value_str = trim(line.substr(virgule + 1));
-        try {
-            float value = std::stof(value_str);
-            values.insert({date, value}); //verifie
+        try 
+        {
+            float value;// = stof(value_str);
+            sscanf(value_str.c_str(), "%f", &value);
+            values.insert(std::make_pair(date, value));
         }
         catch (const std::invalid_argument &e) {
             throw std::runtime_error(data_csv + " ");
@@ -285,40 +119,51 @@ std::map<Date, float, std::greater<Date> > parse_csv(const std::string &data_csv
 
 void read_input(const std::string &filename, char delimiter)
 {
-    std::map<Date, float, std::greater<Date> > dateValues = parse_csv("small.csv", ',');
-    std::ifstream file(filename);
+    std::map<Date, float, std::greater<Date> > dateValues = parse_csv("data_c.csv", ',');
+    std::ifstream file(filename.c_str());
     if(file.fail())
         throw std::invalid_argument("echec open file : " + filename);
     std::string line;
-    // std::map<Date, float> values;
-    std::getline(file, line); //ignore la premiere ligne
+    std::getline(file, line); 
     while (std::getline(file, line))
     {
         size_t virgule = line.find_first_of(delimiter);
         try {
             Date date = trim(line.substr(0, virgule));
             if (!date.is_valid())
-                throw std::invalid_argument("bad input => " + date.input()); //date invalide 
+                throw std::invalid_argument("bad input => " + date.input());
             std::string value_str = trim(line.substr(virgule + 1));
-            float value = std::stof(value_str);
+            //float value = stof(value_str);
+            float value;// = stof(value_str);
+            sscanf(value_str.c_str(), "%f", &value);
             check_value(value);
-            //value > 1000
-            //values.insert({date, value});
+            float result = 0.0;
+            
+            result = dateValues.lower_bound(date)->second * value;
             if (dateValues.find(date) == dateValues.end())
             {
-                // trouver la date la plus proche avec lower_bound
-                //csv inverse
-				//lower band
-				double result = dateValues.lower_bound(date)->second * value;
-				std::cout << "VOICIII" << std::endl;
+                result = dateValues.lower_bound(date)->second * value;
             }
-            // Afficher en cas ou c'est bon avec "0":
+            /*
+            std::map<Date, int>::iterator it = dateValues.lower_bound(date);
+            if (it == dateValues.end())
+            {
+                std::cout << "Error: no date found." << std::endl;
+                return;
+            }
+            if (it->first < date)
+            {
+                std::cout << "Error: invalid date." << std::endl;
+                return;
+            }
+            result = it->second * value;*/
+
 			std::cout << std::setw(2) << std::setfill('0') << date.year();
-			std::cout << '-' <<std::endl;
+			std::cout << '-';
 			std::cout << std::setw(2) << std::setfill('0') << date.month();
-			std::cout << '-' <<std::endl;
+			std::cout << '-';
 			std::cout << std::setw(2) << std::setfill('0') << date.day();
-            std::cout /*<< date.input()*/ << " => " << value << " = " << dateValues[date] * value /* ou result*/<< std::endl;
+            std::cout /*<< date.input()*/ << " => " << value << " = " << result /*value ou result*/<< std::endl;
         }
         catch (const std::invalid_argument &e) {
             std::cout << "Error: " << e.what() << std::endl;
@@ -330,13 +175,13 @@ void read_input(const std::string &filename, char delimiter)
 
 int main(int argc, char *argv[])
 {
-	//argc == 2 ? 
-	//text need argument 
-	//return 0
-
+    if (argc < 2)
+    {
+        std::cout << "need input.txt on argument" << std::endl;
+        return (0);
+    }
     try
     {
-        //argc == 2
         read_input(argv[1], '|');
     }
     catch (const std::invalid_argument &e)
@@ -348,6 +193,7 @@ int main(int argc, char *argv[])
         std::cerr << "Error: bad: "<< e.what() << std::endl;
     }
     return 0;
+}
     // if (argc == 2)
     // {
     //     BitcoinExchange change;
@@ -379,4 +225,3 @@ int main(int argc, char *argv[])
 
     // else
     //     std::cerr << "besoin du fichier input.txt" << std::endl;
-}
